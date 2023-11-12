@@ -123,15 +123,26 @@ void bst_insert(bst_node_t **tree, char key, int value) {
 void bst_replace_by_rightmost(bst_node_t *target, bst_node_t **tree) {
   
   bst_node_t *parent = (*tree);
+  
+  if (parent->right == NULL && parent->left == NULL){
+    target->key = parent->key;
+    target->value = parent->value;
+    free(parent);
+    *tree = NULL;
+    return;
+  }
+  
   bst_node_t *current = parent->right;
 
   while(current->right != NULL) {
     parent = current;
     current = parent->right;
   }
-  
-  target->key = current->key;
-  target->value = current->value;
+
+  if (current->right == NULL ){
+    target->key = current->key;
+    target->value = current->value;
+  }
 
   if (current->left != NULL) {
     parent->right = current->left;
